@@ -1,0 +1,20 @@
+name: "Deploy project"
+on:
+  push:
+    branches: ['master']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Run Deploy
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_ROOT_USER }}
+          key: ${{ secrets.PRIVATE_KEY_ROOT }}
+          port: 22
+          script: |
+            cd ${{ secrets.PROJECT_FOLDER }};
+            cd blog-api;
