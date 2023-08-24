@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('user/login',[UserController::class, 'login']);
 Route::post('user/register',[UserController::class, 'register']);
+Route::get('healthcheck', function(Request $request) {
+    return response()->json([
+        'success' => true,
+        'response' =>  'ip client: ' . request()->ip()
+    ]);
+});
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return response()->json([
