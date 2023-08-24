@@ -18,3 +18,9 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_FOLDER }};
             cd blog-api;
+            git pull origin master;
+            cd ..;
+            cp -r blog-api/* public_html;
+            cd public_html;
+            php artisan migrate;
+            echo "Done!";
