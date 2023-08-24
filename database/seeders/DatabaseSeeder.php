@@ -15,20 +15,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        \App\Models\User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
 
-        // for($i = 0; $i < 10; $i++) {
-        //     Post::create([
-        //         'name' => 'Тестовый пост',
-        //         'author' => 12,
-        //         'text' => Lorem::text(),
-        //         'image' => 'images/post.jpg',
-        //     ]);
-        // }
+        for($i = 0; $i < 10; $i++) {
+            Post::create([
+                'name' => 'Тестовый пост',
+                'author' => 10,
+                'text' => Lorem::text(),
+                'image' => 'images/post.jpg',
+            ]);
+        }
     }
 }
