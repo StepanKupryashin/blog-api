@@ -13,8 +13,8 @@ class PostController extends Controller
         return $this->successResponse($posts);
     }
 
-    public function show(int $id) {
-        $posts = Post::posts()->where("id", $id);
-        return $this->successResponse($posts);
+    public function show(string $id) {
+        $posts = Post::posts()->where("id", (int)$id);
+        return $this->successResponse(...$posts);
     }
 }
