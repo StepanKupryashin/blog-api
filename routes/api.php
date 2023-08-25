@@ -33,6 +33,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('posts')->name('posts.')->group(function (){
     Route::get('/', [PostController::class, 'index']);
+    Route::get('detail/{id}', [PostController::class, 'show']);
 });
 
 
