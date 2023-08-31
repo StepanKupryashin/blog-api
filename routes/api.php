@@ -32,7 +32,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::prefix('posts')->name('posts.')->group(function () {
-    Route::get('/', [PostController::class, 'index']);
+    Route::get('', [PostController::class, 'index']);
     Route::get('detail/{id}', [PostController::class, 'show']);
     Route::get('search', [PostController::class, "search"]);
     Route::get('{postId}/comments', [PostController::class, 'getCommentsByPost']);
@@ -51,5 +51,6 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('user')->name('user.')->group(function () {
         Route::post('edit', [UserController::class, 'changeUser']);
         Route::delete('destroy', [UserController::class, "destroy"]);
+        Route::get('posts', [PostController::class, 'userPosts']);
     });
 });
