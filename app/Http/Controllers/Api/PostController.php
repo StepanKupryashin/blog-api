@@ -76,4 +76,16 @@ class PostController extends Controller
             Comment::byPost($postId)
         );
     }
+
+    public function createPost(Request $request)
+    {
+        return $this->successResponse(
+            Post::create([
+                'name' => $request->get('name'),
+                'author' => $request->user()->id,
+                'text' => $request->get('text'),
+                'image' => 'images/post.jpg'
+            ])
+            );
+    }
 }

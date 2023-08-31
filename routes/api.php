@@ -44,6 +44,7 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('posts')->name('posts.')->group(function () {
         Route::post('{postId}/like', [PostController::class, 'likePost']);
         Route::post('{postId}/comment', [PostController::class, 'commentPost']);
+        Route::put('', [PostController::class, 'createPost']);
     });
 
 
