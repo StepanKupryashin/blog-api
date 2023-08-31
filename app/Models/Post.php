@@ -37,6 +37,30 @@ class Post extends Model
     public function scopePosts()
     {
         $posts = $this->all();
+        $posts = $this->fillPosts($posts);
+        return $posts;
+    }
+    // магия ларавеля не хочет нормально работать (я про scope), поэтому это просто статик метод
+    public static function search($text)
+    {
+        $posts = Post::where('text', 'like', '%' . $text . "%")
+            ->orWhere('name', 'like', '%' . $text . "%")
+            ->get();
+        $posts = Post::fillPosts($posts);
+        return $posts;
+    }
+
+
+    public function scopeUserPosts()
+    {
+        $posts = $this->where('author', request()->user()->id)->get();
+        $posts = $this->fillPosts($posts);
+        return $posts;
+    }
+
+
+    public static function fillPosts($posts)
+    {
         foreach ($posts as $post) {
             $post->author = $post->user;
             $post->comments;
@@ -48,19 +72,6 @@ class Post extends Model
                 )
                 ->get()->count() >= 1 : false;
 
-            $post->image = request()->getSchemeAndHttpHost() . '/' . $post->image;
-        }
-        return $posts;
-    }
-    // магия ларавеля не хочет нормально работать (я про scope), поэтому это просто статик метод
-    public static function search($text)
-    {
-        $posts = Post::where('text', 'like', '%' . $text . "%")
-            ->orWhere('name', 'like', '%' . $text . "%")
-            ->get();
-
-        foreach ($posts as $post) {
-            $post->author = $post->user;
             $post->image = request()->getSchemeAndHttpHost() . '/' . $post->image;
         }
         return $posts;

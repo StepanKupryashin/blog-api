@@ -88,4 +88,11 @@ class PostController extends Controller
             ])
             );
     }
+
+    public function userPosts(Request $request)
+    {
+        return $this->successResponse(
+            Post::userPosts()
+        );
+    }
 }
