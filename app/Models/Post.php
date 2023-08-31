@@ -17,6 +17,16 @@ class Post extends Model
         return $this->hasOne(User::class, 'id', 'author');
     }
 
+    public function likes()
+    {
+        return $this->hasMany(LikePost::class, 'post_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
+    }
+
 
     public function getAttributeImage()
     {
@@ -24,23 +34,34 @@ class Post extends Model
     }
 
 
-    public function scopePosts() {
+    public function scopePosts()
+    {
         $posts = $this->all();
         foreach ($posts as $post) {
             $post->author = $post->user;
-            $post->image = request()->getSchemeAndHttpHost() .'/'.  $post->image;
+            $post->comments;
+            $post->count_like = $post->likes->count();
+            $post->user_like =  auth()->guard('api')->user() ? LikePost::where('post_id', $post->id)
+                ->where(
+                    'author_id',
+                    auth()->guard('api')->user()->id
+                )
+                ->get()->count() >= 1 : false;
+
+            $post->image = request()->getSchemeAndHttpHost() . '/' . $post->image;
         }
         return $posts;
     }
     // магия ларавеля не хочет нормально работать (я про scope), поэтому это просто статик метод
-    public static function search($text) {
-        $posts = Post::where('text', 'like', '%'.$text."%")
-        ->orWhere('name', 'like', '%'.$text."%")
-        ->get();
+    public static function search($text)
+    {
+        $posts = Post::where('text', 'like', '%' . $text . "%")
+            ->orWhere('name', 'like', '%' . $text . "%")
+            ->get();
 
         foreach ($posts as $post) {
             $post->author = $post->user;
-            $post->image = request()->getSchemeAndHttpHost() .'/'.  $post->image;
+            $post->image = request()->getSchemeAndHttpHost() . '/' . $post->image;
         }
         return $posts;
     }
