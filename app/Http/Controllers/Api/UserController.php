@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,5 +42,33 @@ class UserController extends Controller
         return $this->successResponse($data);
     }
 
+
+    public function changeUser(Request $requset)
+    {
+        User::where('id', $requset->user()->id)
+            ->update([
+                'email' => $requset->get('email', $requset->user()->email),
+                'name' => $requset->get('name', $requset->user()->name)
+            ]);
+
+        return $this->successResponse(
+            User::find($requset->user()->id)
+        );
+    }
+
+
+    public function destroy(Request $request)
+    {
+        $user = $request->user();
+
+        Post::where('author', $user->id)->delete();
+
+        $user->delete();
+
+        return $this->successResponse([
+            'message' => 'User was deleted',
+            'deleted_user' => $user
+        ]);
+    }
 
 }
